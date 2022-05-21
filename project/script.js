@@ -5,14 +5,14 @@ const goods = [
   { title: 'Shoes', price: 250 },
 ];
 
-/*const renderGoodsItem = (title = 'Item', price = 'Запросить прайс') => {
+const renderGoodsItem = (title = 'Item', price = 'Запросить прайс') => {
   return `
     <div class="goods-item">
       <h3>${title}</h3>
       <p>${price}</p>
     </div>
   `;
-};*/
+};
 
 const { title = 'Item', price = 'Запросить прайс' } = renderGoodsItem
 
