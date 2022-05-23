@@ -5,24 +5,49 @@ const goods = [
   { title: 'Shoes', price: 250 },
 ];
 
-const renderGoodsItem = (title = 'Item', price = 'Запросить прайс') => {
-  return `
+
+
+class GoodsItem {
+  constructor({ title = '', price = 'Запросить прайс' }) {
+    this.title = title;
+    this.price = price;
+  }
+  render() {
+    return `
     <div class="goods-item">
-      <h3>${title}</h3>
-      <p>${price}</p>
+      <h3>${this.title}</h3>
+      <p>${this.price}</p>
     </div>
-  `;
-};
-
-const { title = 'Item', price = 'Запросить прайс' } = renderGoodsItem
-
-const renderGoodsList = (list = []) => {
-  let goodsList = list.map(item => renderGoodsItem(item.title, item.price)).join('');
-  document.querySelector('.goods-list').innerHTML = goodsList;
-
+  `
+  }
 }
 
-renderGoodsList(goods);
+class GoodsList {
+  fetchData() {
+    this.list = goods
+  }
+  render() {
+    const goodsList = this.list.map(item => {
+      const goodsItem = new GoodsItem(item);
+      return goodsItem.render()
+    }).join('');
+    document.querySelector('.goods-list').innerHTML = goodsList;
+  }
+  summPrice() {
+    const summ = this.list.map(item => item.price).reduce((a, b) => a + b);
+    return summ
+
+  }
+}
+
+
+const goodsList = new GoodsList(goods);
+goodsList.fetchData();
+goodsList.render();
+goodsList.summPrice();
+console.log(goodsList.summPrice())
+
+
 
 const container = document.querySelector('body');
 container.setAttribute('class', 'container');
@@ -46,6 +71,18 @@ goodsItem.forEach(element => {
   createPhotoItem.setAttribute('src', 'https://alehan.ru/upload/resize_cache/iblock/e0b/827_1500_1/e0b7fbace1f33b9c5fd6d581feebe710.jpg');
 
 });
+
+
+const header = document.querySelector('header');
+const button = document.querySelector('button');
+const sumTab = document.createElement('summ');
+sumTab.setAttribute('class', 'sumTab');
+header.insertAdjacentElement('beforeend', sumTab)
+sumTab.innerHTML = `${goodsList.summPrice()} у.е`;
+
+
+
+
 
 
 
