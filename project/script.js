@@ -1,15 +1,31 @@
 const goods = [
-  { title: 'Shirt', price: 150 },
-  { title: 'Socks', price: 50 },
-  { title: 'Jacket', price: 350 },
-  { title: 'Shoes', price: 250 },
+  { product_name: 'Shirt', price: 150 },
+  { product_name: 'Socks', price: 50 },
+  { product_name: 'Jacket', price: 350 },
+  { product_name: 'Shoes', price: 250 },
 ];
 
 
+const BASE_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
+const GOODS = `${BASE_URL}/catalogData.json`;
+const SELECTED_ITEMS = `${BASE_URL}/getBasket.json`;
+
+
+function service(url, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+
+  const loadHandler = () => {
+    callback(JSON.parse(xhr.response));
+  }
+  xhr.onload = loadHandler;
+
+  xhr.send();
+}
 
 class GoodsItem {
-  constructor({ title = '', price = 'Запросить прайс' }) {
-    this.title = title;
+  constructor({ product_name = '', price = 'Запросить прайс' }) {
+    this.title = product_name;
     this.price = price;
   }
   render() {
@@ -23,8 +39,13 @@ class GoodsItem {
 }
 
 class GoodsList {
-  fetchData() {
-    this.list = goods
+  list = [];
+  fetchData(callback) {
+    service(GOODS, (data) => {
+      this.list = data
+      callback()
+    });
+
   }
   render() {
     const goodsList = this.list.map(item => {
@@ -35,17 +56,30 @@ class GoodsList {
   }
   summPrice() {
     const summ = this.list.map(item => item.price).reduce((a, b) => a + b);
-    return summ
-
+    return summ;
   }
 }
 
+class SelectedItems {
+  list = [];
+  fetchData(callback = () => { }) {
+    service(SELECTED_ITEMS, (data) => {
+      this.list = data
+      callback()
+    });
+  }
+}
+const selectedItems = new SelectedItems();
+selectedItems.fetchData()
 
-const goodsList = new GoodsList(goods);
-goodsList.fetchData();
-goodsList.render();
+
+const goodsList = new GoodsList();
+goodsList.fetchData(() => {
+  goodsList.render()
+});
+
 goodsList.summPrice();
-console.log(goodsList.summPrice())
+
 
 
 
