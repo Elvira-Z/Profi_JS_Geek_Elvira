@@ -11,17 +11,15 @@ const GOODS = `${BASE_URL}/catalogData.json`;
 const SELECTED_ITEMS = `${BASE_URL}/getBasket.json`;
 
 
-function service(url, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', url);
 
-  const loadHandler = () => {
-    callback(JSON.parse(xhr.response));
-  }
-  xhr.onload = loadHandler;
 
-  xhr.send();
-}
+function service(url) {
+  return fetch(url).then((res) => {
+    const fetchGoods = res.json()
+
+  });
+
+};
 
 class GoodsItem {
   constructor({ product_name = '', price = 'Запросить прайс' }) {
@@ -40,15 +38,25 @@ class GoodsItem {
 
 class GoodsList {
   list = [];
-  fetchData(callback) {
-    service(GOODS, (data) => {
-      this.list = data
-      callback()
+  filteredGoods = []
+  fetchData() {
+    const promItems = service(GOODS);
+    promItems.then((data) => {
+      this.list = data;
+      this.filteredGoods = data;
+      return data;
+
     });
+    return promItems;
+  }
+  filter(str) {
+    this.filteredGoods = this.list.filter(({ product_name }) => {
+      return (new RegExp(str, 'i')).test(product_name);
+    })
 
   }
   render() {
-    const goodsList = this.list.map(item => {
+    const goodsList = this.filteredGoods.map(item => {
       const goodsItem = new GoodsItem(item);
       return goodsItem.render()
     }).join('');
@@ -62,10 +70,10 @@ class GoodsList {
 
 class SelectedItems {
   list = [];
-  fetchData(callback = () => { }) {
+  fetchData() {
     service(SELECTED_ITEMS, (data) => {
       this.list = data
-      callback()
+
     });
   }
 }
@@ -74,14 +82,17 @@ selectedItems.fetchData()
 
 
 const goodsList = new GoodsList();
-goodsList.fetchData(() => {
+goodsList.fetchData().then(() => {
   goodsList.render()
 });
 
-goodsList.summPrice();
+document.querySelector('.search').addEventListener('click', () => {
+  const searchText = document.querySelector('.searchText');
+  goodsList.filter(searchText.value)
+  goodsList.render()
 
 
-
+})
 
 const container = document.querySelector('body');
 container.setAttribute('class', 'container');
@@ -110,9 +121,8 @@ goodsItem.forEach(element => {
 const header = document.querySelector('header');
 const button = document.querySelector('button');
 const sumTab = document.createElement('summ');
-sumTab.setAttribute('class', 'sumTab');
-header.insertAdjacentElement('beforeend', sumTab)
-sumTab.innerHTML = `${goodsList.summPrice()} у.е`;
+
+
 
 
 

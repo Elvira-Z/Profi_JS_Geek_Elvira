@@ -8,20 +8,45 @@
     margin: 0 auto;
     }
 
-.header {
+header {
+    display: flex;
     height: 100px;
+    justify-content: space-between;
+    background-color: rgb(190, 232, 243);
+    align-items: center;
+    padding: 0 5px 0;
+}
+
+.nameShop {
+    font-size: 30px;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
 }
 
 .cart-button {
-    margin-top: 10px;
 background-color: rgba(84, 180, 180, 0.267);
 padding: 7px;
-border-radius: 10px;
-border-width: 1px;
+border-radius: 5px;
+border-width: 0px;
 display: block;
 right: 3px;
-margin-left: auto;
+margin-left: 5px;
+height: 30px;
+}
 
+
+.search {
+    height: 30px;  
+    border-radius: 5px;
+    background-color: rgba(84, 180, 180, 0.267);
+    border-width: 0px;
+}
+
+input {
+    height: 25px;  
 }
 
 .sumTab {
