@@ -1,20 +1,28 @@
-.body {
+body, html, #root {
     padding: 0;
     margin: 0;
+    height: 100%;
+    position: relative;
 }
 .container {
     max-width: 750px;
     font-family:sans-serif;
     margin: 0 auto;
+   
+    }
+
+    .title {
+    display: flex;
+    justify-content: space-between;
+           padding-top: 20px;
     }
 
 header {
-    display: flex;
     height: 100px;
-    justify-content: space-between;
     background-color: rgb(190, 232, 243);
-    align-items: center;
-    padding: 0 5px 0;
+       padding: 0 5px 0;
+      
+       
 }
 
 .nameShop {
@@ -35,15 +43,11 @@ display: block;
 right: 3px;
 margin-left: 5px;
 height: 30px;
+
 }
 
 
-.search {
-    height: 30px;  
-    border-radius: 5px;
-    background-color: rgba(84, 180, 180, 0.267);
-    border-width: 0px;
-}
+
 
 input {
     height: 25px;  
@@ -61,7 +65,7 @@ input {
 
 .goods-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-top: 30px;
 flex-wrap: wrap;
 }
@@ -70,7 +74,8 @@ flex-wrap: wrap;
     height: 320px;
     width: 230px;
     background-color: rgb(235, 227, 228);
-    margin-bottom: 10px;
+    padding-left: 10px;
+
 }
 
 .photoItem {
@@ -88,4 +93,26 @@ display: block;
 .itemPrice {
     display: block;
     padding-left: 5px;
+}
+
+.cart {
+    position: absolute;
+    border: 1px solid black;
+    left: 150px; right: 150px; top: 100px; bottom: 100px;
+    background-color: beige;
+   
+}
+
+.crossIcon {
+    width: 14px;
+    right: 5px;
+    top: 5px;
+display: block;
+position: absolute;
+right: 5px;
+}
+
+.cartList {
+    padding-left: 15px;
+    font: 24px sans-serif;
 }
