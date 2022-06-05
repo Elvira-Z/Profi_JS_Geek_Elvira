@@ -5,19 +5,38 @@
    <meta charset="UTF-8">
    <title>eShop</title>
    <link rel="stylesheet" href="style.css">
-
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+   <script src="script.js"></script>
 </head>
 
 <body>
-   <header>
-      <button class="cart-button" type="button">Корзина</button>
-   </header>
-   <main>
-      <div class="goods-list"></div>
-   </main>
-   <script src="script.js"></script>
+   <div id="root">
+      <header>
+         <div class="title container">
+            <div class="nameShop">eShop {{summPrice}}</div>
+            <div class="headerRight">
+               <form action="">
+                  <input type="text" class="searchText" v-model="searchValue" placeholder="Поиск..">
+               </form>
+               <button class="cart-button" type="button" @click="cliclkCart">Корзина</button>
+               <div class="cart" v-if="isVisibleCart" @click="closeCart">
+                  <img src="photo/cross.png" class="crossIcon" alt="">
+                  <p class="cartList">Список товаров:</p>
+               </div>
+            </div>
+         </div>
+      </header>
+      <main class="container">
+         <p v-if="waiting">Нет данных</p>
+         <div class="goods-list">
+            <div class="goods-item" v-for="item in filteredGoods">
+               <h3>{{ item.product_name }}</h3>
+               <p>{{ item.price }}</p>
+            </div>
+         </div>
+      </main>
+   </div>
+
 </body>
 
 </html>
-
-<img src="" alt="">
