@@ -26,6 +26,42 @@ goodsItem.forEach(element => {
 });
 
 window.onload = () => {
+  Vue.component('input-search', {
+    props: ['value'],
+    template: `
+      <input type="text" class="searchText"
+        v-bind:value="value"
+        v-on:input="$emit('input', $event.target.value)"
+        placeholder="Поиск..">`
+  })
+
+  Vue.component('cart-window', {
+    template: `
+  <div class="cart">
+    <img src="photo/cross.png" class="crossIcon"  @click="$emit('click')" alt="">
+    <p class="cartList">Список товаров:</p>
+  </div>`
+  }),
+
+    Vue.component('custom-button', {
+      template: `
+      <button class="cart-button" type="button" v-on:click="$emit('click')">
+      <slot></slot>
+      </button>
+      `
+    })
+  Vue.component('good', {
+    props: [
+      'item'
+    ],
+    template:
+      `<div class="goods-item">
+    <h3>{{ item.product_name }}</h3>
+    <p>{{ item.price }}</p>
+ </div>`
+  })
+
+
   const app = new Vue({
     el: '#root',
     data: {

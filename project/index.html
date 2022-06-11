@@ -15,24 +15,17 @@
          <div class="title container">
             <div class="nameShop">eShop {{summPrice}}</div>
             <div class="headerRight">
-               <form action="">
-                  <input type="text" class="searchText" v-model="searchValue" placeholder="Поиск..">
-               </form>
-               <button class="cart-button" type="button" @click="cliclkCart">Корзина</button>
-               <div class="cart" v-if="isVisibleCart" @click="closeCart">
-                  <img src="photo/cross.png" class="crossIcon" alt="">
-                  <p class="cartList">Список товаров:</p>
-               </div>
+               <input-search v-model="searchValue"></input-search>
+               <custom-button v-on:click="cliclkCart">Корзина</custom-button>
+               <cart-window v-if="isVisibleCart" v-on:click="closeCart"></cart-window>
             </div>
          </div>
       </header>
       <main class="container">
          <p v-if="waiting">Нет данных</p>
          <div class="goods-list">
-            <div class="goods-item" v-for="item in filteredGoods">
-               <h3>{{ item.product_name }}</h3>
-               <p>{{ item.price }}</p>
-            </div>
+            <good v-for="item in filteredGoods" v-bind:item="item"></good>
+
          </div>
       </main>
    </div>
