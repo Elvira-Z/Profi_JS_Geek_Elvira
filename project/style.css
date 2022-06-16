@@ -1,37 +1,82 @@
-.body {
+body, html, #root {
     padding: 0;
     margin: 0;
+    height: 100%;
+    position: relative;
 }
 .container {
     max-width: 750px;
     font-family:sans-serif;
     margin: 0 auto;
+   
     }
 
+    .title {
+    display: flex;
+    justify-content: space-between;
+           padding-top: 20px;
+    }
+
+header {
+    height: 100px;
+    background-color: rgb(190, 232, 243);
+       padding: 0 5px 0;
+      
+       
+}
+
+.nameShop {
+    font-size: 30px;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+}
+
 .cart-button {
-    margin-top: 20px;
 background-color: rgba(84, 180, 180, 0.267);
 padding: 7px;
-border-radius: 10px;
-border-width: 1px;
+border-radius: 5px;
+border-width: 0px;
 display: block;
 right: 3px;
-margin-left: auto;
+margin-left: 5px;
+height: 30px;
+}
 
+
+
+
+input {
+    height: 25px;  
+}
+
+.sumTab {
+    display: block;
+    height: inherit;
+    width: 100px;
+    text-align: end;
+    margin-left: auto;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .goods-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-top: 30px;
-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .goods-item {
     height: 320px;
     width: 230px;
     background-color: rgb(235, 227, 228);
-    margin-bottom: 10px;
+    padding-left: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+
 }
 
 .photoItem {
@@ -41,12 +86,55 @@ flex-wrap: wrap;
 }
 
 .itemTitle {
-font-size: 20px;
-padding-left: 5px;
-display: block;
+    font-size: 20px;
+    padding-left: 5px;
+    display: block;
 }
 
 .itemPrice {
     display: block;
     padding-left: 5px;
+}
+
+.cart {
+    position: absolute;
+    border: 1px solid black;
+    left: 150px; right: 150px; top: 100px; bottom: 100px;
+    background-color: beige;
+   
+}
+
+.crossIcon {
+    width: 14px;
+    right: 5px;
+    top: 5px;
+    display: block;
+    position: absolute;
+    right: 5px;
+}
+
+.cartList {
+    padding-left: 15px;
+    font: 24px sans-serif;
+}
+
+.inCartItem {
+   
+    display: flex;
+    padding: 10px 20px 10px;
+    
+    
+}
+
+.inCartItem div {
+    margin-right: 20px;
+}
+
+.changeQuantity {
+    border: 1px solid black;
+    display: block;
+    width: 20px;
+    height: 20px;
+    
+
 }
