@@ -1,10 +1,10 @@
-const BASE_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
-const GOODS = `${BASE_URL}/catalogData.json`;
-const SELECTED_ITEMS = `${BASE_URL}/getBasket.json`;
+const BASE_URL = "http://localhost:8000/";
+const GOODS = `${BASE_URL}goods.json`;
+const SELECTED_ITEMS = `${BASE_URL}basket`;
 
 
 function service(url) {
-  return fetch(url).then((res) => res.json());
+  return fetch(url).then((res) => res.json())
 };
 
 const itemTitle = document.querySelectorAll('h3');
@@ -35,25 +35,47 @@ window.onload = () => {
         placeholder="Поиск..">`
   })
 
-  Vue.component('cart-window', {
-    template: `
-  <div class="cart">
-    <img src="photo/cross.png" class="crossIcon"  @click="$emit('click')" alt="">
-    <p class="cartList">Список товаров:</p>
-  </div>`
-  }),
+  Vue.component('in-cart-items', {
+    props: ['item'],
+    template:
+      `<div class="inCartItem">
+      <div class="itemName">{{ item.product_name }}</div>
+      <div class="itemSum">{{ item.price }} руб.</div>
+      <button class="changeQuantity">+</button>
+      <div class="itemQuantity">{{ item.count }} шт.</div>
+      <button class="changeQuantity">-</button>
+   </div>`
+  })
 
-    Vue.component('custom-button', {
-      template: `
+  Vue.component('cart-window', {
+    data() {
+      return {
+        basketGoodsItems: []
+      }
+    },
+    template: `
+    <div class="cart">
+      <img src="photo/cross.png" class="crossIcon"  @click="$emit('click')" alt="">
+      <p class="cartList">Список товаров:</p>
+      <in-cart-items v-for="item in basketGoodsItems" :item="item"></in-cart-items>
+    </div>`,
+    mounted() {
+      service(SELECTED_ITEMS).then((basket) => {
+        this.basketGoodsItems = basket
+      })
+    }
+  });
+
+  Vue.component('custom-button', {
+    template: `
       <button class="cart-button" type="button" v-on:click="$emit('click')">
       <slot></slot>
       </button>
       `
-    })
-  Vue.component('good', {
-    props: [
-      'item'
-    ],
+  });
+
+  const goodsItem = Vue.component('good', {
+    props: ['item'],
     template:
       `<div class="goods-item">
     <h3>{{ item.product_name }}</h3>

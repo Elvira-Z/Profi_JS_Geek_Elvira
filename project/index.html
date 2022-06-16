@@ -17,7 +17,10 @@
             <div class="headerRight">
                <input-search v-model="searchValue"></input-search>
                <custom-button v-on:click="cliclkCart">Корзина</custom-button>
-               <cart-window v-if="isVisibleCart" v-on:click="closeCart"></cart-window>
+               <cart-window v-if="isVisibleCart" v-on:click="closeCart">
+                  <in-cart-items v-for="item in basketGoodsItems" :item="item"></in-cart-items>
+               </cart-window>
+
             </div>
          </div>
       </header>
@@ -25,10 +28,11 @@
          <p v-if="waiting">Нет данных</p>
          <div class="goods-list">
             <good v-for="item in filteredGoods" v-bind:item="item"></good>
-
          </div>
+
       </main>
    </div>
+
 
 </body>
 
