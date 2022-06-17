@@ -1,4 +1,5 @@
 const BASE_URL = "http://localhost:8000/";
+const GOODS_ADD = `${BASE_URL}goods`;
 const GOODS = `${BASE_URL}goods.json`;
 const SELECTED_ITEMS = `${BASE_URL}basket`;
 
@@ -6,6 +7,19 @@ const SELECTED_ITEMS = `${BASE_URL}basket`;
 function service(url) {
   return fetch(url).then((res) => res.json())
 };
+
+function serviceWithBody(url = "", method = "POST", body = {}) {
+  return fetch(
+    url,
+    {
+      method,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(body)
+    }
+  )
+}
 
 const itemTitle = document.querySelectorAll('h3');
 itemTitle.forEach(element => {
@@ -78,9 +92,20 @@ window.onload = () => {
     props: ['item'],
     template:
       `<div class="goods-item">
+      <div class="itemImg"></div>
+      <div>
     <h3>{{ item.product_name }}</h3>
     <p>{{ item.price }}</p>
- </div>`
+    </div>
+    <custom-button class="addItem" @click="addGood">Добавить</custom-button>
+ </div>`,
+    methods: {
+      addGood() {
+        serviceWithBody(GOODS_ADD, "POST", {
+          id: this.item.id_product
+        })
+      }
+    }
   })
 
 

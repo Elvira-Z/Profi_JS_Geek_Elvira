@@ -17,10 +17,7 @@
             <div class="headerRight">
                <input-search v-model="searchValue"></input-search>
                <custom-button v-on:click="cliclkCart">Корзина</custom-button>
-               <cart-window v-if="isVisibleCart" v-on:click="closeCart">
-                  <in-cart-items v-for="item in basketGoodsItems" :item="item"></in-cart-items>
-               </cart-window>
-
+               <cart-window v-if="isVisibleCart" v-on:click="closeCart"></cart-window>
             </div>
          </div>
       </header>

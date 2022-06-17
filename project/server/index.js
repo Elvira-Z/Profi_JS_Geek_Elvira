@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { writeFile, readFile } from 'fs/promises';
+import { get } from "http";
 
 const BASKET = './public/basket_goods.json';
 const GOODS = './public/goods.json';
@@ -20,6 +21,56 @@ const readGoods = () => readFile(GOODS, 'utf-8')
     .then((basketFile) => {
         return JSON.parse(basketFile)
     })
+
+/*function getReformBasket() {
+    return Promise.all([
+        readBasket(),
+        readGoods()
+    ]).then(([basketList, goodsList]) => {
+        return basketList.map((basketItem) => {
+            const goodsItem = goodsList.find(({ id_product: _goodsId }) => {
+                return _goodsId === basketItem.id_product
+            });
+            return {
+                ...basketItem,
+                ...goodsItem
+            }
+        })
+    }).then((result) => {
+
+        res.send(JSON.stringify(result))
+    })
+}*/
+
+app.post('/goods', (res, req) => {
+    console.log(res.body)
+    readBasket().then((goodsList) => {
+        const basketItem = goodsList.find(({ id_product: _id }) => _id === res.body.id);
+        if (!basketItem) {
+            goodsList.push({
+                id_product: res.body.id,
+                count: 1,
+            })
+        } else {
+            goodsList = goodsList.map((basketItem) => {
+                if (basketItem.id_product === res.body.id) {
+                    return {
+                        ...basketItem,
+                        count: basketItem.count + 1
+                    }
+                } else {
+                    return basketItem
+                }
+            })
+        }
+
+        return writeFile(BASKET, JSON.stringify(goodsList)).then(() => {
+            req.send(JSON.stringify(goodsList))
+        })
+
+    })
+
+})
 
 app.get('/basket', (req, res) => {
     Promise.all([
