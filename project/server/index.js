@@ -22,7 +22,7 @@ const readGoods = () => readFile(GOODS, 'utf-8')
         return JSON.parse(basketFile)
     })
 
-/*function getReformBasket() {
+function getReformBasket() {
     return Promise.all([
         readBasket(),
         readGoods()
@@ -36,14 +36,13 @@ const readGoods = () => readFile(GOODS, 'utf-8')
                 ...goodsItem
             }
         })
-    }).then((result) => {
-
-        res.send(JSON.stringify(result))
+        return result
+        //res.send(JSON.stringify(result))
     })
-}*/
+}
 
 app.post('/goods', (res, req) => {
-    console.log(res.body)
+
     readBasket().then((goodsList) => {
         const basketItem = goodsList.find(({ id_product: _id }) => _id === res.body.id);
         if (!basketItem) {
@@ -63,17 +62,23 @@ app.post('/goods', (res, req) => {
                 }
             })
         }
-
         return writeFile(BASKET, JSON.stringify(goodsList)).then(() => {
-            req.send(JSON.stringify(goodsList))
+            return getReformBasket()
+        }).then((result) => {
+            req.send(result)
         })
-
     })
 
 })
 
+
+
 app.get('/basket', (req, res) => {
-    Promise.all([
+    getReformBasket().then((result) => {
+        res.send(JSON.stringify(result))
+    })
+
+    /*Promise.all([
         readBasket(),
         readGoods()
     ]).then(([basketList, goodsList]) => {
@@ -89,7 +94,7 @@ app.get('/basket', (req, res) => {
     }).then((result) => {
         console.log(result)
         res.send(JSON.stringify(result))
-    })
+    })*/
 });
 
 app.listen('8000', () => {

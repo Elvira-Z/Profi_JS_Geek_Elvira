@@ -18,7 +18,7 @@ function serviceWithBody(url = "", method = "POST", body = {}) {
       },
       body: JSON.stringify(body)
     }
-  )
+  ).then((res) => res.json())
 }
 
 const itemTitle = document.querySelectorAll('h3');
@@ -55,7 +55,7 @@ window.onload = () => {
       `<div class="inCartItem">
       <div class="itemName">{{ item.product_name }}</div>
       <div class="itemSum">{{ item.price }} руб.</div>
-      <button class="changeQuantity">+</button>
+      <button @click="$emit('add', item.id_product)" class="changeQuantity">+</button>
       <div class="itemQuantity">{{ item.count }} шт.</div>
       <button class="changeQuantity">-</button>
    </div>`
@@ -71,12 +71,24 @@ window.onload = () => {
     <div class="cart">
       <img src="photo/cross.png" class="crossIcon"  @click="$emit('click')" alt="">
       <p class="cartList">Список товаров:</p>
-      <in-cart-items v-for="item in basketGoodsItems" :item="item"></in-cart-items>
+      <in-cart-items v-for="item in basketGoodsItems" 
+      :item="item" 
+      @add="addGood"></in-cart-items>
+      
     </div>`,
     mounted() {
-      service(SELECTED_ITEMS).then((basket) => {
-        this.basketGoodsItems = basket
+      service(SELECTED_ITEMS).then((data) => {
+        this.basketGoodsItems = data
       })
+    },
+    methods: {
+      addGood(id) {
+        serviceWithBody(GOODS_ADD, "POST", {
+          id
+        }).then((data) => {
+          this.basketGoodsItems = data;
+        })
+      }
     }
   });
 
