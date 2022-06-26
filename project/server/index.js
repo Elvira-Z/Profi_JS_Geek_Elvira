@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { writeFile, readFile } from 'fs/promises';
 import { get } from "http";
+import { count } from "console";
 
 const BASKET = './public/basket_goods.json';
 const GOODS = './public/goods.json';
@@ -37,11 +38,11 @@ function getReformBasket() {
             }
         })
         return result
-        //res.send(JSON.stringify(result))
+
     })
 }
 
-app.post('/goods', (res, req) => {
+app.post('/basket', (res, req) => {
 
     readBasket().then((goodsList) => {
         const basketItem = goodsList.find(({ id_product: _id }) => _id === res.body.id);
@@ -70,6 +71,9 @@ app.post('/goods', (res, req) => {
     })
 
 })
+app.delete('/basket', (res, req) => {
+
+})
 
 
 
@@ -77,24 +81,6 @@ app.get('/basket', (req, res) => {
     getReformBasket().then((result) => {
         res.send(JSON.stringify(result))
     })
-
-    /*Promise.all([
-        readBasket(),
-        readGoods()
-    ]).then(([basketList, goodsList]) => {
-        return basketList.map((basketItem) => {
-            const goodsItem = goodsList.find(({ id_product: _goodsId }) => {
-                return _goodsId === basketItem.id_product
-            });
-            return {
-                ...basketItem,
-                ...goodsItem
-            }
-        })
-    }).then((result) => {
-        console.log(result)
-        res.send(JSON.stringify(result))
-    })*/
 });
 
 app.listen('8000', () => {

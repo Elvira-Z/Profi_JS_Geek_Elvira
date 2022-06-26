@@ -57,7 +57,7 @@ window.onload = () => {
       <div class="itemSum">{{ item.price }} руб.</div>
       <button @click="$emit('add', item.id_product)" class="changeQuantity">+</button>
       <div class="itemQuantity">{{ item.count }} шт.</div>
-      <button class="changeQuantity">-</button>
+      <button @click="$emit('delete', item.id_product)" class="changeQuantity">-</button>
    </div>`
   })
 
@@ -73,7 +73,8 @@ window.onload = () => {
       <p class="cartList">Список товаров:</p>
       <in-cart-items v-for="item in basketGoodsItems" 
       :item="item" 
-      @add="addGood"></in-cart-items>
+      @add="addGood" 
+      @delete="deleteGood"></in-cart-items>
       
     </div>`,
     mounted() {
@@ -83,7 +84,14 @@ window.onload = () => {
     },
     methods: {
       addGood(id) {
-        serviceWithBody(GOODS_ADD, "POST", {
+        serviceWithBody(SELECTED_ITEMS, "POST", {
+          id
+        }).then((data) => {
+          this.basketGoodsItems = data;
+        })
+      },
+      deleteGood(id) {
+        serviceWithBody(SELECTED_ITEMS, "DELETE", {
           id
         }).then((data) => {
           this.basketGoodsItems = data;
