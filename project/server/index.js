@@ -43,7 +43,6 @@ function getReformBasket() {
 }
 
 app.post('/basket', (res, req) => {
-
     readBasket().then((goodsList) => {
         const basketItem = goodsList.find(({ id_product: _id }) => _id === res.body.id);
         if (!basketItem) {
@@ -71,7 +70,39 @@ app.post('/basket', (res, req) => {
     })
 
 })
+
 app.delete('/basket', (res, req) => {
+
+    readBasket().then((goodsList) => {
+        const basketItem = goodsList.find(({ id_product: _id }) => _id === res.body.id);
+        /*if (!basketItem) {
+            goodsList.push({
+                id_product: res.body.id,
+                count: 1,
+            })
+        } else {
+            goodsList = goodsList.map((basketItem) => {
+                if (basketItem.id_product === res.body.id) {
+                    return {
+                        ...basketItem,
+                        count: basketItem.count + 1
+                    }
+                } else {
+                    return basketItem
+                }
+            })
+        }*/
+        return {
+            ...basketItem,
+            count: basketItem.count - 1
+        }
+
+        return writeFile(BASKET, JSON.stringify(goodsList)).then(() => {
+            return getReformBasket()
+        }).then((result) => {
+            req.send(result)
+        })
+    })
 
 })
 

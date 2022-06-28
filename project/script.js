@@ -90,13 +90,14 @@ window.onload = () => {
           this.basketGoodsItems = data;
         })
       },
-      deleteGood(id) {
+      /*deleteGood(id) {
         serviceWithBody(SELECTED_ITEMS, "DELETE", {
           id
         }).then((data) => {
           this.basketGoodsItems = data;
+
         })
-      }
+      }*/
     }
   });
 
@@ -123,6 +124,8 @@ window.onload = () => {
       addGood() {
         serviceWithBody(GOODS_ADD, "POST", {
           id: this.item.id_product
+        }).then((data) => {
+          this.basketGoodsItems = data;
         })
       }
     }
