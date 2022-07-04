@@ -28,7 +28,7 @@ function getReformBasket() {
         readBasket(),
         readGoods()
     ]).then(([basketList, goodsList]) => {
-        return basketList.map((basketItem) => {
+        const result = basketList.map((basketItem) => {
             const goodsItem = goodsList.find(({ id_product: _goodsId }) => {
                 return _goodsId === basketItem.id_product
             });
@@ -43,11 +43,12 @@ function getReformBasket() {
 }
 
 app.post('/basket', (res, req) => {
+
     readBasket().then((goodsList) => {
         const basketItem = goodsList.find(({ id_product: _id }) => _id === res.body.id);
         if (!basketItem) {
             goodsList.push({
-                id_product: res.body.id,
+                _id: res.body.id,
                 count: 1,
             })
         } else {
@@ -71,30 +72,18 @@ app.post('/basket', (res, req) => {
 
 })
 
-app.delete('/basket', (res, req) => {
+/*app.delete('/basket', (res, req) => {
 
     readBasket().then((goodsList) => {
         const basketItem = goodsList.find(({ id_product: _id }) => _id === res.body.id);
-        /*if (!basketItem) {
-            goodsList.push({
-                id_product: res.body.id,
-                count: 1,
-            })
-        } else {
-            goodsList = goodsList.map((basketItem) => {
-                if (basketItem.id_product === res.body.id) {
-                    return {
-                        ...basketItem,
-                        count: basketItem.count + 1
-                    }
-                } else {
-                    return basketItem
-                }
-            })
-        }*/
-        return {
-            ...basketItem,
-            count: basketItem.count - 1
+
+        if (basketItem.count >= 2) {
+            return {
+                ...basketItem,
+                count: basketItem.count - 1
+            }
+        } else if (basketItem.count = 1) {
+            basketItem.remove
         }
 
         return writeFile(BASKET, JSON.stringify(goodsList)).then(() => {
@@ -103,8 +92,9 @@ app.delete('/basket', (res, req) => {
             req.send(result)
         })
     })
+})*/
 
-})
+
 
 
 
